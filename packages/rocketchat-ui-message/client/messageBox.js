@@ -453,7 +453,7 @@ Template.messageBox.events({
 				y: document.querySelector('.rc-message-box__textarea').getBoundingClientRect().top
 			},
 			customCSSProperties: {
-				left: isRtl() ? `${ textArea.getBoundingClientRect().left - 10 }px` : undefined
+				left: isRtl() ? `${ textArea.getBoundingClientRect().left - 10 }px` : `${ textArea.getBoundingClientRect().right + 10 }px`
 			},
 			data: {
 				rid: this._id
@@ -473,8 +473,6 @@ Template.messageBox.onRendered(function() {
 	}).on('autogrow', () => {
 		this.data && this.data.onResize && this.data.onResize();
 	}).focus()[0];
-
-	chatMessages[RocketChat.openedRoom].restoreText(RocketChat.openedRoom);
 });
 
 Template.messageBox.onCreated(function() {
