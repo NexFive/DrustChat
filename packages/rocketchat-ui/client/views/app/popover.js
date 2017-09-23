@@ -16,6 +16,10 @@ this.popover = {
 };
 
 Template.popover.onRendered(function() {
+	if (this.data.onRendered) {
+		this.data.onRendered();
+	}
+
 	$('.rc-popover').click(function(e) {
 		if (e.currentTarget === e.target) {
 			popover.close();
@@ -52,6 +56,8 @@ Template.popover.onRendered(function() {
 			left = mousePosition.x - popoverWidth;
 		} else if (mousePosition.x <= popoverWidth) {
 			left = isRtl() ? mousePosition.x + 10 : 10;
+		} else if (mousePosition.x <= windowWidth / 2) {
+			left = mousePosition.x;
 		} else {
 			left = mousePosition.x - popoverWidth;
 		}
@@ -133,13 +139,14 @@ Template.popover.events({
 		const { rid, name, template } = instance.data.data;
 
 		if (e.currentTarget.dataset.id === 'hide') {
-			let warnText;	
+			let warnText;
 			switch (template) {
 				case 'c': warnText = 'Hide_Room_Warning'; break;
 				case 'p': warnText = 'Hide_Group_Warning'; break;
 				case 'd': warnText = 'Hide_Private_Warning'; break;
+				case 'l': warnText = 'Hide_Livechat_Warning'; break;
 			}
-	
+
 			return swal({
 				title: t('Are_you_sure'),
 				text: warnText ? t(warnText, name) : '',
@@ -154,7 +161,7 @@ Template.popover.events({
 				if (['channel', 'group', 'direct'].includes(FlowRouter.getRouteName()) && (Session.get('openedRoom') === rid)) {
 					FlowRouter.go('home');
 				}
-	
+
 				Meteor.call('hideRoom', rid, function(err) {
 					if (err) {
 						handleError(err);
@@ -164,11 +171,12 @@ Template.popover.events({
 				});
 			});
 		} else {
-			let warnText;	
+			let warnText;
 			switch (template) {
 				case 'c': warnText = 'Leave_Room_Warning'; break;
 				case 'p': warnText = 'Leave_Group_Warning'; break;
 				case 'd': warnText = 'Leave_Private_Warning'; break;
+				case 'l': warnText = 'Hide_Livechat_Warning'; break;
 			}
 
 			swal({
@@ -191,13 +199,12 @@ Template.popover.events({
 								type: 'warning',
 								html: false
 							});
-	
 						} else {
 							swal.close();
 							if (['channel', 'group', 'direct'].includes(FlowRouter.getRouteName()) && (Session.get('openedRoom') === rid)) {
 								FlowRouter.go('home');
 							}
-	
+
 							RoomManager.close(rid);
 						}
 					});
