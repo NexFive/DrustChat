@@ -79,20 +79,13 @@
 	}
 
 	&__container {
-		display: flex;
-
-		padding: 0.75rem 0;
-
-		cursor: text;
-
-		transition: background-color 0.3s;
-
-		border-width: var(--message-box-container-border-width);
-		border-color: var(--message-box-container-border-color);
-		border-radius: var(--message-box-container-border-radius);
-
-		line-height: 20px;
-		align-items: center;
+		    display: flex;
+                    padding: 0.75rem 0;
+                    cursor: text;
+                    transition: background-color 0.3s;
+		    line-height: 20px;
+                    align-items: center;
+                    border-top: 1px solid rgba(0,0,0,0.10);
 
 		&.editing {
 			background-color: var(--message-box-editing-color);
